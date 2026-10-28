@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fffaf5">
+<title>CopyNow Lite</title>
+<style>
+:root{--bg:#fffaf5;--ink:#282522;--muted:#817b75;--line:#eee5dc;--accent:#f28a3b;--card:#fff;--shadow:0 5px 18px rgba(64,44,26,.06)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.app{max-width:780px;margin:0 auto;padding:18px 16px 36px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 20px}
+.brand{display:flex;align-items:center;gap:10px}.logo{width:46px;height:46px;border-radius:15px;background:#f28a3b;color:white;display:grid;place-items:center;font-weight:800;letter-spacing:-1px;box-shadow:var(--shadow)}
+h1{font-size:21px;margin:0} .sub{font-size:12px;color:var(--muted);margin-top:3px}
+.iconbtn,.secondary,.primary{border:0;border-radius:13px;padding:11px 14px}.iconbtn,.secondary{background:#fff;border:1px solid var(--line);color:var(--ink)}.primary{background:var(--accent);color:white;font-weight:700}
+.searchrow{display:flex;gap:8px;margin-bottom:12px}.search{flex:1;min-width:0;border:1px solid var(--line);background:white;border-radius:15px;padding:14px 15px;outline:none}.search:focus,input:focus,textarea:focus,select:focus{border-color:#f4a66d;box-shadow:0 0 0 3px #fce8d8}
+.chips{display:flex;gap:8px;overflow:auto;padding:2px 0 12px;scrollbar-width:none}.chip{white-space:nowrap;border:1px solid var(--line);background:white;color:var(--muted);border-radius:999px;padding:8px 13px;font-size:13px}.chip.active{background:#292622;color:white;border-color:#292622}
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin:6px 0 12px}.count{font-size:12px;color:var(--muted)}.tools{display:flex;gap:7px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow);min-width:0;position:relative;display:flex;flex-direction:column;min-height:180px}.cardtop{display:flex;justify-content:space-between;gap:8px;align-items:center}.tag{font-size:11px;color:#6e635a;background:#f7f0e9;border-radius:999px;padding:5px 8px;max-width:75%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pin{border:0;background:transparent;font-size:18px;padding:0;color:#b0a69b}.pin.pinned{color:#e78a32}.card h3{font-size:15px;margin:12px 0 8px;line-height:1.35;overflow-wrap:anywhere}.preview{font-size:13px;color:#716b65;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;flex:1}.cardbottom{display:flex;gap:7px;margin-top:14px}.copybtn{flex:1;border:0;background:#fff0e3;color:#a65315;border-radius:11px;padding:10px 8px;font-weight:700}.smallbtn{border:1px solid var(--line);background:white;border-radius:11px;padding:9px 10px}.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:44px 18px;background:#fff;border:1px dashed #e8dcd0;border-radius:18px}.fab{position:fixed;right:max(18px,calc((100vw - 780px)/2 + 18px));bottom:calc(20px + env(safe-area-inset-bottom));width:58px;height:58px;border:0;border-radius:20px;background:var(--accent);color:white;font-size:30px;box-shadow:0 8px 24px #d8874a55;z-index:3}
+dialog{border:0;border-radius:22px;padding:0;width:min(92vw,520px);max-height:88vh;box-shadow:0 20px 70px #0003}dialog::backdrop{background:#29221d66;backdrop-filter:blur(3px)}.modal{padding:20px;overflow:auto;max-height:88vh}.modalhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}.modalhead h2{font-size:19px;margin:0}.close{border:0;background:#f5eee7;border-radius:50%;width:34px;height:34px;font-size:20px}.field{margin:13px 0}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:12px;background:white;padding:12px;outline:none}.field textarea{min-height:120px;resize:vertical}.modalactions{display:flex;gap:8px;margin-top:18px}.modalactions button{flex:1}.colorrow{display:flex;gap:9px;flex-wrap:wrap}.coloropt{width:30px;height:30px;border:3px solid white;border-radius:50%;box-shadow:0 0 0 1px #ddd}.coloropt.selected{box-shadow:0 0 0 2px #333}.toast{position:fixed;z-index:5;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:#292622;color:white;border-radius:999px;padding:12px 17px;font-size:13px;opacity:0;pointer-events:none;transition:.2s;max-width:90vw;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}.help{font-size:12px;color:var(--muted);line-height:1.6;margin-top:14px}
+@media(min-width:620px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}.app{padding-top:28px}}
+@media(max-width:380px){.cards{grid-template-columns:1fr}.card{min-height:150px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+ <div class="brand"><div class="logo">COPY</div><div><h1>CopyNow Lite</h1><div class="sub">常用文字，一點即複製</div></div></div>
+ <button class="iconbtn" id="manageCats" title="管理分類">分類</button>
+</header>
+<div class="searchrow"><input id="search" class="search" placeholder="搜尋標題、內容或分類…" autocomplete="off"><button class="primary" id="addTop">＋ 新增</button></div>
+<div class="chips" id="chips"></div>
+<div class="toolbar"><span class="count" id="count">0 張卡片</span><div class="tools"><button class="secondary" id="importBtn">匯入</button><button class="secondary" id="exportBtn">匯出</button></div></div>
+<div class="cards" id="cards"></div>
+<div class="help">資料預設只保存在這個瀏覽器的裝置上，不需要帳號。請定期匯出備份；清除瀏覽器資料或更換裝置可能會讓資料消失。</div>
+</div>
+<button class="fab" id="fab" aria-label="新增卡片">＋</button>
+<div class="toast" id="toast" role="status"></div>
+
+<dialog id="cardDialog"><form class="modal" id="cardForm">
+ <div class="modalhead"><h2 id="formTitle">新增卡片</h2><button class="close" type="button" data-close="cardDialog">×</button></div>
+ <input type="hidden" id="cardId">
+ <div class="field"><label for="title">標題</label><input id="title" maxlength="80" placeholder="例如：日文詢問模板" required></div>
+ <div class="field"><label for="content">要複製的文字</label><textarea id="content" placeholder="輸入要快速複製的文字…" required></textarea></div>
+ <div class="field"><label for="category">分類</label><select id="category"></select></div>
+ <div class="field"><label>卡片顏色</label><div class="colorrow" id="colorOptions"></div></div>
+ <div class="modalactions"><button class="secondary" type="button" data-close="cardDialog">取消</button><button class="primary" type="submit">儲存卡片</button></div>
+</form></dialog>
+
+<dialog id="categoryDialog"><form class="modal" id="categoryForm">
+ <div class="modalhead"><h2>分類管理</h2><button class="close" type="button" data-close="categoryDialog">×</button></div>
+ <div class="field"><label for="newCategory">新增分類</label><div style="display:flex;gap:8px"><input id="newCategory" placeholder="例如：日文、生活、工作" maxlength="30"><button class="primary" type="submit">新增</button></div></div>
+ <div id="categoryList"></div>
+ <p class="help">刪除分類時，該分類的卡片會移至「未分類」。</p>
+ <div class="modalactions"><button class="secondary" type="button" data-close="categoryDialog">完成</button></div>
+</form></dialog>
+<input type="file" id="importFile" accept=".json,.txt,application/json,text/plain" hidden>
+<script>
+(() => {
+const STORAGE_KEY='copynow-lite-v1';
+const COLORS=[{name:'奶油白',value:'#fffaf0'},{name:'蜜桃粉',value:'#fff0ef'},{name:'薄荷綠',value:'#edfaf2'},{name:'天空藍',value:'#edf6ff'},{name:'薰衣草',value:'#f5efff'},{name:'檸檬黃',value:'#fff9d9'},{name:'純白',value:'#ffffff'}];
+const DEFAULT={categories:['未分類','日文','生活','工作','購物'],cards:[]};
+let data=loadData(), activeCategory='全部', selectedColor=COLORS[0].value, toastTimer;
+const $=id=>document.getElementById(id);
+function loadData(){try{const d=JSON.parse(localStorage.getItem(STORAGE_KEY));if(d&&Array.isArray(d.cards)&&Array.isArray(d.categories))return d;}catch(e){}return structuredClone(DEFAULT)}
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function showToast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2100)}
+function render(){
+ const q=$('search').value.trim().toLowerCase();
+ const cats=['全部',...data.categories];
+ $('chips').innerHTML=cats.map(c=>`<button class="chip ${activeCategory===c?'active':''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('');
+ const cards=data.cards.filter(c=>(activeCategory==='全部'||c.category===activeCategory)&&(!q||[c.title,c.content,c.category].join(' ').toLowerCase().includes(q))).sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||(b.updated||0)-(a.updated||0));
+ $('count').textContent=`${cards.length} 張卡片${q||activeCategory!=='全部'?'（篩選中）':''}`;
+ $('cards').innerHTML=cards.length?cards.map(c=>`<article class="card" style="background:${safeColor(c.color)}" data-id="${esc(c.id)}">
+ <div class="cardtop"><span class="tag">${esc(c.category||'未分類')}</span><button class="pin ${c.pinned?'pinned':''}" data-action="pin" title="${c.pinned?'取消置頂':'置頂'}">${c.pinned?'★':'☆'}</button></div>
+ <h3>${esc(c.title)}</h3><div class="preview">${esc(c.content)}</div>
+ <div class="cardbottom"><button class="copybtn" data-action="copy">複製文字</button><button class="smallbtn" data-action="edit" aria-label="編輯">✎</button><button class="smallbtn" data-action="delete" aria-label="刪除">×</button></div>
+ </article>`).join(''):`<div class="empty"><div style="font-size:30px;margin-bottom:8px">✦</div><b>${q?'找不到符合的卡片':'還沒有文字卡片'}</b><p style="margin-bottom:0">${q?'試試其他關鍵字。':'點右下角「＋」建立第一張常用文字卡片。'}</p></div>`;
+}
+function safeColor(c){return COLORS.some(x=>x.value===c)?c:'#ffffff'}
+function refreshCategorySelect(value='未分類'){$('category').innerHTML=data.categories.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');$('category').value=data.categories.includes(value)?value:(data.categories[0]||'未分類')}
+function renderColors(){ $('colorOptions').innerHTML=COLORS.map(c=>`<button type="button" class="coloropt ${selectedColor===c.value?'selected':''}" data-color="${c.value}" style="background:${c.value}" aria-label="${c.name}" title="${c.name}"></button>`).join('')}
+function openCard(card=null){
+ $('cardForm').reset();$('cardId').value=card?.id||'';$('formTitle').textContent=card?'編輯卡片':'新增卡片';
+ $('title').value=card?.title||'';$('content').value=card?.content||'';selectedColor=card?.color||COLORS[0].value;
+ refreshCategorySelect(card?.category||'未分類');renderColors();$('cardDialog').showModal();setTimeout(()=>$('title').focus(),100)
+}
+function renderCategories(){
+ $('categoryList').innerHTML=data.categories.map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)"><span>${esc(c)}</span><button class="secondary" data-remove-cat="${esc(c)}" ${c==='未分類'?'disabled':''}>刪除</button></div>`).join('');
+}
+async function copyText(text){
+ try{await navigator.clipboard.writeText(text);showToast('已複製到剪貼簿！')}
+ catch(e){const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(_){}ta.remove();showToast(ok?'已複製到剪貼簿！':'複製失敗，請編輯卡片後手動複製')}
+}
+function download(name,content,type){const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+$('cards').addEventListener('click',e=>{
+ const b=e.target.closest('[data-action]');if(!b)return;const cardEl=b.closest('[data-id]');const c=data.cards.find(x=>x.id===cardEl.dataset.id);if(!c)return;
+ const action=b.dataset.action;
+ if(action==='copy')copyText(c.content);
+ if(action==='edit')openCard(c);
+ if(action==='delete'){if(confirm(`確定刪除「${c.title}」嗎？`)){data.cards=data.cards.filter(x=>x.id!==c.id);save();render();showToast('卡片已刪除')}}
+ if(action==='pin'){c.pinned=!c.pinned;c.updated=Date.now();save();render();showToast(c.pinned?'已置頂':'已取消置頂')}
+});
+$('chips').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(b){activeCategory=b.dataset.cat;render()}});
+$('search').addEventListener('input',render);
+$('addTop').onclick=$('fab').onclick=()=>openCard();
+$('cardForm').addEventListener('submit',e=>{
+ e.preventDefault();const id=$('cardId').value;const old=data.cards.find(c=>c.id===id);
+ const item={id:id||uid(),title:$('title').value.trim(),content:$('content').value,category:$('category').value||'未分類',color:selectedColor,pinned:old?.pinned||false,created:old?.created||Date.now(),updated:Date.now()};
+ if(!item.title||!item.content.trim()){showToast('請填寫標題和文字內容');return}
+ if(old)data.cards=data.cards.map(c=>c.id===id?item:c);else data.cards.push(item);
+ save();$('cardDialog').close();activeCategory='全部';render();showToast(old?'卡片已更新':'卡片已新增')
+});
+$('colorOptions').addEventListener('click',e=>{const b=e.target.closest('[data-color]');if(b){selectedColor=b.dataset.color;renderColors()}});
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>$(b.dataset.close).close()));
+$('manageCats').onclick=()=>{renderCategories();$('categoryDialog').showModal()};
+$('categoryForm').addEventListener('submit',e=>{e.preventDefault();const v=$('newCategory').value.trim();if(!v)return;if(data.categories.includes(v)){showToast('這個分類已存在');return}data.categories.push(v);$('newCategory').value='';save();renderCategories();refreshCategorySelect();render();showToast('分類已新增')});
+$('categoryList').addEventListener('click',e=>{const b=e.target.closest('[data-remove-cat]');if(!b)return;const cat=b.dataset.removeCat;if(cat==='未分類')return;if(!confirm(`刪除「${cat}」分類？相關卡片會移至「未分類」。`))return;data.categories=data.categories.filter(c=>c!==cat);data.cards.forEach(c=>{if(c.category===cat)c.category='未分類'});if(activeCategory===cat)activeCategory='全部';save();renderCategories();refreshCategorySelect();render();showToast('分類已刪除')});
+$('exportBtn').onclick=()=>{download('copynow-backup-'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify({format:'copynow-lite',version:1,...data},null,2),'application/json');showToast('已匯出備份檔')};
+$('importBtn').onclick=()=>$('importFile').click();
+$('importFile').addEventListener('change',async e=>{
+ const file=e.target.files[0];if(!file)return;
+ try{const text=await file.text();let parsed;
+ if(file.name.toLowerCase().endsWith('.txt')){const lines=text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);parsed={categories:data.categories,cards:lines.map((line,i)=>({id:uid(),title:line.slice(0,60),content:line,category:'未分類',color:COLORS[0].value,pinned:false,created:Date.now()+i,updated:Date.now()+i}))}}
+ else{parsed=JSON.parse(text);if(!Array.isArray(parsed.cards))throw new Error('格式不正確');}
+ if(!confirm(`匯入 ${parsed.cards.length} 張卡片？選擇「確定」會將匯入卡片加入現有資料。`))return;
+ const incomingCats=Array.isArray(parsed.categories)?parsed.categories:[];
+ incomingCats.forEach(c=>{if(typeof c==='string'&&!data.categories.includes(c))data.categories.push(c)});
+ parsed.cards.forEach(c=>{if(typeof c.title!=='string'||typeof c.content!=='string')return;const category=data.categories.includes(c.category)?c.category:'未分類';data.cards.push({id:uid(),title:c.title,content:c.content,category,color:safeColor(c.color),pinned:!!c.pinned,created:Date.now(),updated:Date.now()})});
+ save();render();showToast('匯入完成');
+ }catch(err){alert('無法匯入此檔案。請使用 CopyNow Lite 匯出的 JSON，或使用每行一段文字的 TXT 檔。')}
+ finally{$('importFile').value=''}
+});
+render();
+})();
+</script>
+</body>
+</html>
